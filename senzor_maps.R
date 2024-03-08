@@ -76,14 +76,14 @@ elevPlot <-
 
 roads <- 
   tm_shape(adm0) +
-  tm_polygons(col = "white", title = "Roads") +#
+  tm_polygons(col = "white", title = "Roads") +
   tm_layout(frame = F) +
   tm_shape(road) +
   tm_lines(col = "brown", lwd = 2)
 
 waterBody <- 
   tm_shape(adm0) +
-  tm_polygons(col = "white") +#
+  tm_polygons(col = "white") +
   tm_layout(frame = F) +
   tm_shape(waterL) +
   tm_lines(col = "blue", lwd = 2) +
