@@ -1,42 +1,40 @@
-# Map making for SENZOR 
+## Map making for SENZOR 
 
-# Set up -------------------------------------------------------------------------------------
 
-# Directory
-setwd("C:/Users/SantiagoRaymentGomez/OneDrive - London School of Hygiene and Tropical Medicine/OneZoo PhD/Data analysis")
+# Environment set up ----
 
 # Libraries
 {library(pacman)
 p_load(mapview, leaflet, MODIStsp, raster, terra, sf, geodata, tmap, tidyverse)}
 
-# Shapefile data ----------------------------------------------------------------------------
+# Shapefile data ----
 
 # Africa
-afr <- st_read("Shapefiles/afr_g2014_2013_0.shp")
-tm_shape(afr) + tm_polygons()
+afr <- st_read(here("Shapefiles", "afr_g2014_2013_0.shp"))
+
 # Gambia
-gm_adm0 <- st_read("Shapefiles/gmb_admbnda_adm0_ndma_20220901.shp")
-gm_adm1 <- st_read("Shapefiles/gmb_admbnda_adm1_ndma_20220901.shp")
-gm_adm2 <- st_read("Shapefiles/gmb_admbnda_adm2_ndma_20220901.shp")
+gm_adm0 <- st_read(here("Shapefiles", "gmb_admbnda_adm0_ndma_20220901.shp"))
+gm_adm1 <- st_read(here("Shapefiles", "gmb_admbnda_adm1_ndma_20220901.shp"))
+gm_adm2 <- st_read(here("Shapefiles", "gmb_admbnda_adm2_ndma_20220901.shp"))
 
 # Nigeria
-ng_adm0 <- st_read("Shapefiles/gadm41_NGA_0.shp")
-ng_adm1 <- st_read("Shapefiles/gadm41_NGA_1.shp")
-ng_adm2 <- st_read("Shapefiles/gadm41_NGA_2.shp")
+ng_adm0 <- st_read(here("Shapefiles", "gadm41_NGA_0.shp"))
+ng_adm1 <- st_read(here("Shapefiles", "gadm41_NGA_1.shp"))
+ng_adm2 <- st_read(here("Shapefiles", "gadm41_NGA_2.shp"))
 
 # Environmental
-#road <- st_read("Shapefiles/GMB_roads.shp")
-#waterA <- st_read("Shapefiles/GMB_water_areas_dcw.shp")
-#waterL <- st_read("Shapefiles/GMB_water_lines_dcw.shp")
+#road <- st_read(here("Shapefiles", "GMB_roads.shp"))
+#waterA <- st_read(here("Shapefiles", "GMB_water_areas_dcw.shp"))
+#waterL <- st_read(here("Shapefiles", "GMB_water_lines_dcw.shp"))
 
-# Raster data --------------------------------------------------------------------------------------
+# Raster data ----
 
 # Path for storing raster
 options(geodata_default_path = "C:/Users/SantiagoRaymentGomez/OneDrive - London School of Hygiene and Tropical Medicine/OneZoo PhD/Data analysis/Raster")
 
 # Saved rasters
-pop <- raster("Raster/gmb_pop.grd") # DIVA-GIS
-landcover <- raster("Raster/gmb_cov.grd") # DIVA-GIS
+pop <- raster(here("Raster", "gmb_pop.grd")) # DIVA-GIS
+landcover <- raster(here("Raster", "gmb_cov.grd")) # DIVA-GIS
 
 # World pop rasters
 #elev <- elevation_30s(country = "GMB", mask = T)
@@ -119,7 +117,7 @@ tmap_arrange(admPlot, popPlot, landPlot, elevPlot, rainyPrecPlot,
              ncol = 3, nrow = 3)
 
 
-# ESA World cover -------------------------------------------------------------------------------
+# ESA World cover ----
 
 # Create file list for all tifs
 tif_files <- list.files("Raster/ESA World Cover", pattern = ".tif$", full.names = TRUE)
@@ -149,7 +147,7 @@ for(tif_files in tif_files[-1]) {
 # with purrr
 merged_raster <- reduce(map(tif_files, raster), merge)
 
-# Study site maps -------------------------------------------------------------------------------
+# Study site maps ----
 
 ### Gambia ###
 
@@ -359,7 +357,7 @@ tm_shape(landcover_ondo) +
   tm_dots(col = "name", size = 0.5, shape = 24, title = "Study Site", 
           palette = c("darkred", "darkblue"), border.col = NA)
 
-# Protocol study site maps ----------------------------------------------------------------------------
+# Protocol study site maps ----
 
 # Africa 
 tm_shape(afr %>% filter(ADM0_NAME %in% c("Burkina Faso", "Benin", "Cabo Verde", "C\xf4te d'Ivoire", "Gambia", "Ghana", "Guinea", 
@@ -415,3 +413,4 @@ tm_shape(ng_adm1) +
   tm_layout(frame = F, legend.title.size = 1.2, legend.text.size = 1) +
   tm_legend(legend.position = c(0.8,0))
 
+# End ----
